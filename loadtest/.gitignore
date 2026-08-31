@@ -1,0 +1,5 @@
+# 真实 token，禁止入库
+tokens.json
+# k6 输出
+summary-*.json
+results/
