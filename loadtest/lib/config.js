@@ -3,8 +3,10 @@
  * 所有可变项一律走环境变量，脚本里不硬编码任何地址和凭证。
  */
 
-// 被测网关地址。测试环境走公网，生产走内网，由 run.sh 传入
-export const BASE_URL = (__ENV.BASE_URL || 'http://127.0.0.1:8080').replace(/\/+$/, '');
+// 被测接口根地址 = 网关地址 + context-path，由 run.sh 传入。
+// 默认值里的 /miniapp/api 是 server.servlet.context-path，由 Nacos 下发（本地配置文件里没有），
+// 漏掉它所有接口都是 404。
+export const BASE_URL = (__ENV.BASE_URL || 'http://127.0.0.1:8080/miniapp/api').replace(/\/+$/, '');
 
 /**
  * 鉴权头名称。

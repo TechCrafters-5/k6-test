@@ -7,8 +7,12 @@ provider / order-provider 是 Dubbo 服务没有 HTTP 端口，不在本工具�
 
 ```bash
 brew install k6                                  # macOS
-BASE_URL=https://<测试环境网关> ./run.sh scenarios/public-store.js
+./run.sh scenarios/public-store.js               # 不传 BASE_URL 默认打本机 http://127.0.0.1:8080/miniapp/api
+BASE_URL=https://<测试环境网关>/miniapp/api ./run.sh scenarios/public-store.js
 ```
+
+> `BASE_URL` 要带上 `/miniapp/api`：那是 `server.servlet.context-path`，由 Nacos
+> （`main-api-*.properties`）下发，本地代码库里搜不到，漏掉的话所有接口都是 404。
 
 `public-store.js` 是免登录场景，不需要 token，用来先验证网络通不通、脚本对不对。
 

@@ -22,14 +22,18 @@ export const options = {
       executor: 'ramping-vus',
       startVUs: 0,
       stages: [
-        { duration: '30s', target: Number(__ENV.VUS || 10) },  // 爬坡
-        { duration: '1m', target: Number(__ENV.VUS || 10) },   // 稳态
+        { duration: '30s', target: Number(__ENV.VUS || 30) },  // 爬坡
+        { duration: '1m', target: Number(__ENV.VUS || 30) },   // 稳态
         { duration: '15s', target: 0 },                        // 收尾
       ],
       gracefulRampDown: '15s',
     },
   },
-  thresholds: commonThresholds,
+  thresholds: Object.assign({}, commonThresholds, {
+    // 按接口单独设 p95 阈值，避免快接口把慢接口的数字平均掉、在总体指标里被掩盖
+    'http_req_duration{name:public_queue_summary}': ['p(95)<500'],
+    'http_req_duration{name:public_distance_limit}': ['p(95)<500'],
+  }),
 };
 
 export default function () {

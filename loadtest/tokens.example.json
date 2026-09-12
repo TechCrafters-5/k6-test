@@ -1,5 +1,0 @@
-[
-  "把整个数组替换成 xxl-job 里 loadTestUserJobHandler 打印的 token 列表",
-  "任务参数示例：{\"mode\":\"both\",\"count\":50} 造 50 个账号并签发 token",
-  "复制后另存为同目录下的 tokens.json（已 gitignore），不要把真实 token 写回本文件"
-]

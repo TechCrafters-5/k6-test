@@ -18,7 +18,7 @@ import { url, params, STORE_ID } from '../lib/config.js';
 import { authHeaders, tokenCount } from '../lib/auth.js';
 import { checkApi, commonThresholds } from '../lib/checks.js';
 
-const VUS = Number(__ENV.VUS || 10);
+const VUS = Number(__ENV.VUS || 30);
 
 export const options = {
   scenarios: {
@@ -33,7 +33,13 @@ export const options = {
       gracefulRampDown: '15s',
     },
   },
-  thresholds: commonThresholds,
+  thresholds: Object.assign({}, commonThresholds, {
+    // 按接口单独设 p95 阈值，避免快接口把慢接口的数字平均掉、在总体指标里被掩盖
+    'http_req_duration{name:store_package_list}': ['p(95)<500'],
+    'http_req_duration{name:coupon_list_available}': ['p(95)<500'],
+    'http_req_duration{name:order_list}': ['p(95)<500'],
+    'http_req_duration{name:order_queue_info}': ['p(95)<500'],
+  }),
 };
 
 export function setup() {
